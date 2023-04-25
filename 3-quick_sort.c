@@ -44,13 +44,13 @@ void sorter(int *array, int low, int high, size_t size)
 {
 	int p;
 
-	if (low < high)
+	if (low >= high || low < 0)
 	{
-		p = partition(array, low, high, size);
-		sorter(array, low, p - 1, size);
-		sorter(array, p + 1, high, size);
+		return;
 	}
-
+	p = partition(array, low, high, size);
+	sorter(array, low, p - 1, size);
+	sorter(array, p + 1, high, size);
 }
 
 /**
@@ -70,14 +70,22 @@ int partition(int *array, int low, int high, size_t size)
 
 	for (j = low; j <= high - 1; j++)
 	{
-		if (array[j] < pivot)
+		if (array[j] <= pivot)
 		{
-			i++;
-			swap(&array[i], &array[j]);
+			i = i + 1;
+			if (array[i] != array[j])
+			{
+				swap(&array[i], &array[j]);
+				print_array(array, size);
+			}
 		}
 	}
 	i = i + 1;
-	swap(&array[i], &array[high]);
-	print_array(array, size);
+
+	if (array[i] != array[high])
+	{
+		swap(&array[i], &array[high]);
+		print_array(array, size);
+	}
 	return (i);
 }
